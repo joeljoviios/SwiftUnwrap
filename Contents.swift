@@ -612,9 +612,101 @@ func doubleInPlace(number: inout Int) {
 var myNum = 10
 doubleInPlace(number: &myNum)
 
-//NEXT IS CLOSURES
+//MARK:- CLOSURES
+//// CompletionHandler are closures which is called inside the function, that closures are usually called after some task is complete.
+//Swift lets us use functions just like any other type such as strings and integers. This means you can create a function and assign it to a variable. call that function using that variable. and even pass that function into other functions as parameters. Functions used in this way are called CLOSURES. and although they work like functions they are written a little differently.
 
+let driving = {
+    print("I'm driving my car")
+}
+// This Effectively creates a function without a function name and assigns that function to driving. We can now call driving() as if it were a regular function like below
+driving()
 
+//ACCEPTING PARAMETERS
+// To make a closure accept parameters, list them inside parenteses just after the opening brace, then write "in" so that swift know the main body of the closure is starting.
+
+let drivings = {(place: String) in
+    print("I'm going to \(place) in my car")
+}
+drivings("London")
+
+//Note: One of the differences between functions and closures is that you don't use parameters labels when running closures. So, to call driving() now we'd use like below
+drivings("India")
+
+//RETURNING VALUES
+//Closures can also return values and they are writeen similarly to parameters:
+
+let drivingWithReturn = {(place: String) -> String in
+    return "I'm returning to \(place) in my car"
+}
+//calling
+drivingWithReturn("London")
+let message = drivingWithReturn("London")
+print(message)
+
+//Ex
+let measureSize = { (inches: Int) -> String in
+    switch inches {
+    case 0...26:
+        return "XS"
+    case 27...30:
+        return "S"
+    case 31...36:
+        return "M"
+    default:
+        return "XL"
+    }
+}
+measureSize(36)
+
+//CLOSURES AS PARAMETERS
+//Because closures can be used just like strings and integers, you can pass them into functions.
+
+func travel(action: () -> Void) {
+    print("I'm getting ready to go.")
+    action()
+    print("I arrived")
+}
+travel(action: driving)
+// Ex
+let helicopterTravel = { print("Get to the chopper!")
+}
+func travel(by travelMeans: () -> Void) {
+    print("Lets go to vacation..")
+    travelMeans()
+}
+travel(by: helicopterTravel)
+
+//TRAILING CLOSURE SYNTAX
+//If the last parameter to a function is a closure, swift lets you use special syntax called trailing closure syntax. Rather than pass in your closure as a parameter, you pass it directly after the function inside braces.
+
+func travels(action: () -> Void) {
+    print("I'm getting ready to go.")
+    action()
+    print("I arrived")
+}
+
+// Because it's last parameter is a closure. we can call travel() using trailing closure syntax like below
+travels() {
+    print("I'm getting ready to go")
+}
+//Infact, there aren't any other parameters, we can eliminate the parentheses entirely
+travels {
+    print("I'm getting ready to go")
+}
+
+//USING CLOSURES AS PARAMETERS WHEN THEY ACCEPT PARAMETERS
+// A Closure you pass into a function can also accept its own parameters.
+
+func crawl(action: (String) -> Void){
+    print("I'm getting ready to crawl.")
+    action("Home")
+    print("I arrived")
+}
+
+crawl { (place: String) in
+    print("I'm going to \(place) in my car")
+}
 
 
 
