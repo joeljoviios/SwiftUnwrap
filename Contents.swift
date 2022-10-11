@@ -1,5 +1,6 @@
 import UIKit
-//MARK: Sample Types
+
+// MARK: Sample Types
 //Varaibles
 ///Assigned Value can be changed at any point of time
 var greeting = "Hello, playground"
@@ -7,59 +8,74 @@ greeting = "Another playground"
 //Constants
 ///Assigned Value cannot be changed once Set.
 let const = "hello I'm Constant and i can not change"
+//if you try to change value Error: cannot assign to value: const is a let constant
 
-//MARK: Data Types
-let life = Bool()
+// MARK: Data Types
+var life: Bool = true
 let age = Int()
-var myAge : Int = 20
-let grade : Float
+var myAge: Int = 20
+let grade: Float
 
 print(myAge)
 print(age)
+print(life)
 
-//MARK: Basic Function
+// MARK: Basic Function
 ///Functions are basically used for re-usabiltiy, Scalability.
 func sayHello () {
     print("Hello I'm basic Function")
 }
 sayHello()
 
-//MARK: Function with Parameters
+// MARK: Function with Parameters
 ///function with parameters are the functions which accepts arguments with same/Different Datatype.
 func sayHelloTo(name: String) {
-    print("Hello \(name), I'm a funciton with Parameters")
+    print("Hello \(name), I'm a funciton with Parameter")
 }
 sayHelloTo(name: "Joel")
 sayHelloTo(name: "Jona")
 
-//MARK: Function with multiple Parameters with different data types
-func sayHelloToJona(name: String , age: Int, isAlive: Bool, Percentage: Float) {
+// MARK: Function with multiple Parameters with different data types
+func sayHelloToJona(name: String, age: Int, isAlive: Bool, Percentage: Float) {
     print("Hello \(name), My age is \(age), I'm \(isAlive), and my percentage is \(Percentage)")
 }
 sayHelloToJona(name: "Jona", age: 22, isAlive: true, Percentage: 99.9)
 
-//MARK: Ommiting the argument label
-func sayHelloToJona(_ name: String , _ age: Int, _ isAlive: Bool, _ Percentage: Float) {
+// MARK: Ommiting the argument label
+func sayHelloToJona(_ name: String, _ age: Int, _ isAlive: Bool, _ Percentage: Float) {
     print("Hello \(name), My age is \(age), I'm \(isAlive), and my percentage is \(Percentage)")
 }
 sayHelloToJona("Jona", 20, true, 99.8)
 
-//MARK: Function with return type
+sayHelloToJona(name: "Jona", age: 20, isAlive: true, Percentage: 99.9)
+
+// MARK: Function with return type
 func addNumberTo(x: Int) -> Int {
    let sum = x + 10
     return sum
 }
 addNumberTo(x: 5)
 
+// MARK: Functions with implicit return
+func greeting(to person: String) -> String {
+    "Hello, " + person + "!"
+}
+print(greeting(to: "Jona"))
+
+func anotherGreeting(to person: String) -> String {
+    return "Hello, " + person + "!"
+}
+print(anotherGreeting(to: "Jona"))
+
 //NOTE : variables/Constants declared inside the function are accessible only within the function itself
 
 class myRobot {
     var robotName = "Jona"
-    
+
     func walk() {
         print("I'm \(robotName) and I'm walking")
     }
-    
+
     func run() {
         print("I'm \(robotName) and I'm running")
     }
@@ -70,8 +86,8 @@ robotObject.robotName = "JoelJona"
 robotObject.run()
 robotObject.walk()
 
-//MARK: INOUT Parameter function
-//All the parameters in a swift function by default are constants. so If we want to change the values of that parameters we will have to make use of INOUT. The changes that are done will reflect to the original vlaue outside the funtion.
+// MARK: INOUT Parameter function
+//All the parameters in a swift function by default are constants. so If we want to change the values of that parameters we will have to make use of INOUT. The changes that are done will reflect to the original vlaue outside the funtion. All the function parameter are constants by default. Trying to change the value of a function parameter from within the body of that function results in compile-time-error. This means we can't change the values of parameter bu mistake. If you want function to modify a parameter's value, and you want the changes to persisit after the function call has ended, we should define the parameter as "inout"
 
 var x = 10
 func makeDouble(num: inout Int) {
@@ -86,7 +102,7 @@ func nameChange(str: inout String) {
 }
 nameChange(str: &myName)
 
-//MARK: class and Struct Difference
+// MARK: class and Struct Difference
 /* Class is a reference type where as Struct is a value type
  Ref type : A reference will be created and doesn't copy the data. So when we change one instance other instances will also get changed
  Value Type: A unique copy will be created and the data doesn't change
@@ -118,7 +134,6 @@ var aClass = someClass(name: "Jona")
 var bClass = aClass
 bClass.name = "Joel"
 
-
 print(aClass)
 print(bClass)
 
@@ -134,7 +149,7 @@ bStruct.name = "Joel"
 print(aStruct)
 print(bStruct)
 
-//MARK: Generics
+// MARK: Generics
 /*
  Works with all the return types and helps in reducing redundant code.
  */
@@ -146,8 +161,7 @@ func addInts(x: Int, y: Int) -> Int {
 let sums = addInts(x: 1, y: 2)
 print(sums)
 
-
-//MARK: Lazy Loading
+// MARK: Lazy Loading
 func printGreeting(to: String) -> String {
     print("In printGreeting()")
     return "Hello, \(to)"
@@ -162,7 +176,7 @@ func lazyTest() {
 
 lazyTest()
 
-//MARK: SWIFT TOUR
+// MARK: SWIFT TOUR
 let myBrothers: Float = 4
 
 //values are never implicitly converted to another type
@@ -181,7 +195,7 @@ print("\(joelGreeting), and my age on total is \(joelAge + tempNumber)")
     And then I said "My age is \(joelAge + tempNumber)" on total."
     """
 
-//MARK: Arrays and Dictionaries
+// MARK: Arrays and Dictionaries
 //Create an empty Array and Dictionary using Initializer Syntax
 var emptyArray = [String]()
 var emptyDictionary = [String: String]()
@@ -191,19 +205,19 @@ shoppingList = []
 occupations = [:]
 
 //Array
-var shoppingList = ["catfish","water","tulips"]
+var shoppingList = ["catfish", "water", "tulips"]
 shoppingList[1] = "bottle of water"
 
 //Dictionary
-var occupations = ["Joel": "Developer", "Jona":"Executive","Daddy":"Foreman"]
+var occupations = ["Joel": "Developer", "Jona": "Executive", "Daddy": "Foreman"]
 occupations["Daddy"] = "Farmer"
 
-//MARK: Control Flow
+// MARK: Control Flow
 /*
  Use if and switch to make conditionals, and user for-in , while, and repeat-whilt to make loops, Parentheses around the condition or loop variable are optional. Braces around the body are required.
  */
 
-let individualScores = [75,43,103,87,12]
+let individualScores = [75, 43, 103, 87, 12]
 var teamScore = 0
 for score in individualScores {
     if score > 50 {
@@ -214,7 +228,7 @@ for score in individualScores {
 }
 print(teamScore)
 
-//MARK:-  Optionals
+// MARK: - Optionals
 var optionalString: String = "Hello"
 print(optionalString == nil)
 var optionalName: String? = "Jona Jovi"
@@ -236,10 +250,9 @@ let nickName: String? = nil
 let fullName: String = "Joel Jona"
 let informalGreetings = "Hey \(nickName ?? fullName)"
 
-
-//MARK: Default Values for Dictionary
+// MARK: Default Values for Dictionary
 // When we try to access for a value which doesn't exist xcode return nil. So instead of showing nil we can provide a default value to the user
-let names = ["Joel":"Male","Jona":"Female"]
+let names = ["Joel": "Male", "Jona": "Female"]
 names["Joel"]
 
 //When we try to access value which doesn't exist will see nil
@@ -248,8 +261,7 @@ names["bharat"]
 //providing default value
 names["bharat", default: "unknown"]
 
-
-//MARK: Empty Collection
+// MARK: Empty Collection
 
 //Array
 var students = [String]()
@@ -291,7 +303,7 @@ enum Planet: Int {
     case satun
 }
 
-//MARK:- Operators and conditions, ARITHMETIC OPERATORS
+// MARK: - Operators and conditions, ARITHMETIC OPERATORS
 let firstScore = 10
 let secondScore = 5
 
@@ -302,24 +314,24 @@ let divided = firstScore / secondScore
 
 let remainder = 13 % 4
 
-//MARK:- Operator Overloading
+// MARK: - Operator Overloading
 // TYPE_SAFE:- Swift is a type-safe language. which means it won't let you mix types. For Example. You can't add an integer to an string because it doesn't make any sense
 
 let fakers = "Faker gonna"
 let fake = fakers + "Fake"
 
-let firstHalf = ["Joel" , "JOvi"]
-let secondHalf = ["Jona","Rachel"]
+let firstHalf = ["Joel", "JOvi"]
+let secondHalf = ["Jona", "Rachel"]
 let complete = firstHalf + secondHalf
 
-//MARK:- Compound Assignment Operators
+// MARK: - Compound Assignment Operators
 var score = 95
 score += 5
 
 var quote = "A moment of pain is worth a lifetime of "
 quote += "glory"
 
-//MARK:- Comparision Operators
+// MARK: - Comparision Operators
 // == != < > <= >=
 
 firstScore == secondScore
@@ -333,7 +345,7 @@ firstScore >= secondScore
 
 "Joel" <= "Jona"
 
-//MARK:- Conditions
+// MARK: - Conditions
 // if, if else
 
 let firstCard = 11
@@ -361,7 +373,7 @@ if firstCard + secondCard == 2 {
     print("HeartJack!!!")
 }
 
-//MARK:- Combining Conditions
+// MARK: - Combining Conditions
 // && ||
 
 let age1 = 23
@@ -376,7 +388,7 @@ if age1 > 18 || age2 > 18 {
     print("at least one is over 22")
 }
 
-//MARK:- TERNARY OPERATOR
+// MARK: - TERNARY OPERATOR
 print(firstCard == secondCard ? "Cards are the same" : "Cards are different")
 // Note: Although some coders love using the ternary operator, it's best to avoid it because it doesn't make your code very clear
 
@@ -389,7 +401,7 @@ print(averagePages == 10 ? "success" : "failure")
 let storageMagnets = true
 print(storageMagnets ? "success" : "failure")
 
-//MARK:- SWITCH STATEMENTS
+// MARK: - SWITCH STATEMENTS
 let weather = "sunny"
 
 switch weather {
@@ -433,21 +445,21 @@ default:
 var avera = 10.0
 avera += 1.1
 
-//MARK:- LOOPS
+// MARK: - LOOPS
 //FOR LOOP
 let count = 1...10
 
 for number in count {
     print("Number is \(number)")
 }
-let albums = ["Red","1993","Reputation"]
+let albums = ["Red", "1993", "Reputation"]
 
 for album in albums {
     print("\(album) is on Apple Music")
 }
 
 print("Players gonna")
-for _ in 0..<1{
+for _ in 0..<1 {
     print("play")
 }
 
@@ -473,7 +485,7 @@ while speed <= 55 {
     speed += 1
 }
 
-//MARK:- REPEAT LOOPS
+// MARK: - REPEAT LOOPS
 //It's identical to a while loop except the condition to check comes at the end.
 var number = 1
 repeat {
@@ -494,8 +506,7 @@ repeat {
     print("this is false")
 } while false
 
-
-//MARK:- WRITING FUNCTIONS
+// MARK: - WRITING FUNCTIONS
 //Functions let us re-use code. which means we can write a function to do something interesting then run that function from lots of places. Repeating code is generally a bad idea. and functions help us avoid doing that. To start with, we're going to write a function that prints help information for users of our app. We might need this anywhere inour app. so having it ias a function is a good idea. Swift functions start whti the func keyword, then your function name, then opena dnclose parentheses. All the body of you funtion - the code that shoyld be run when the function is requested is place inside braces.
 
 func printHelp() {
@@ -508,20 +519,20 @@ func printHelp() {
 }
 printHelp()
 
-//MARK:- ACCEPTING PARAMETERS
+// MARK: - ACCEPTING PARAMETERS
 //functions become more poweful when they can be customized each time you run them. Swift lets you send values to a function that can then be used insdie the function to change the way it behavves. We've used this already - we've been sending string sand integers to the print() function like below
 print("Hello, world!")
 
 //vlaues sent into functions this way are called parameters. To make your own functions accept parameters, give each parameter a name, then a colon, them tell swift the type of data it must be. All this goes inside the parenteses after your function name. For example, we can write a function to print the square of any number
 
-func square(number: Int){
+func square(number: Int) {
     print( number * number)
 }
 
 //calling function
 square(number: 8)
 
-//MARK:- RETURNING VALUES
+// MARK: - RETURNING VALUES
 //As well as receiving data, functions can also send back data. to do this. Write a dash thena righ angle bracket after you function's parameter list. then tell swift what kind of data will be returned. Inside you function. you use the return keyword to send a value back if you have one. Your function then immedaiately exits. sending back that vlaue - no other code from that function will be run. we could rewrite our suware() function to return a value rather than print it directly
 
 func squared(number: Int) -> Int {
@@ -531,26 +542,26 @@ let squaredResult = squared(number: 8)
 print(squaredResult)
 // if you need to return multiple values, this is a perfect example of when to use tuples
 
-//MARK:- PARAMETER LABELS
+// MARK: - PARAMETER LABELS
 //Swift lets us provide two names for each parameter: one to be used expernally when calling the function, and one to be used internally inside the function. this is as simple as writing two names, seperated by a spcae.
- 
+
 func sayHelloo(to name: String) {
     print("Hello \(name)")
 }
 sayHelloo(to: "Jona")
 
-//MARK:- OMITTING PARAMETER LABELS
+// MARK: - OMITTING PARAMETER LABELS
 //you migh have notice that we don't actually send any parameter names when we call print() - we say print("Hello") rather than print(message: "Hello"). YO can get this same behaviour in your own functions by using an underscore, _ for your external parameter name like below
 
-func greet(_ person: String){
+func greet(_ person: String) {
     print("Hello \(person)!")
 }
 greet("Jona")
 
-//MARK:- DEFAULT PARAMETERS
+// MARK: - DEFAULT PARAMETERS
 //The print() function prints something to the screen, but always adds a new line to the end of whatever you prointed. so that multiple calls to proint() don't all appear on the same line. You can change that behaviour if you want. so you could use spaces rather than line breaks. Most of the line, though, folks want new lines. so print() has a terminator parameter that uses new line as its default value. you can give you r own parameters a default value just by writing an = after its type followed by the default you want to five it. So we could write a greet() function that can optionally print nice greetings:
 
-func greeto(_ name: String, nicely: Bool = true){
+func greeto(_ name: String, nicely: Bool = true) {
     if nicely == false {
         print("Hello \(name)")
     } else {
@@ -560,9 +571,9 @@ func greeto(_ name: String, nicely: Bool = true){
 greeto("Jona")
 //greeto("Jona", nicely: true)
 
-//MARK:- VARIADIC FUNCTIONS
+// MARK: - VARIADIC FUNCTIONS
 //Some functions are variadic, which is a fancy way of saying they accept any nubmer of parameters of the same type. the Print() function is actually variadic if you pass lots of parameters they are all printed on one line with space between them
-print("Haters","gonna","hate")
+print("Haters", "gonna", "hate")
 //you can make any parameter variadic by writing ... after its type. so an Int parameter is a single interer, whereas Int... is zero or more integers potentially hunders. Inside the function. Swift converts the vlaues that were passed in to an array of integers, so you can loop over them as needed. To try this out. let's write a square() functions that can square many numbers
 
 func squareMultiNumbers(numbers: Int...) {
@@ -571,9 +582,9 @@ func squareMultiNumbers(numbers: Int...) {
     }
 }
 
-squareMultiNumbers(numbers: 1,2,3,4,5)
+squareMultiNumbers(numbers: 1, 2, 3, 4, 5)
 
-//MARK:- WRITING THROWING FUNCTIONS
+// MARK: - WRITING THROWING FUNCTIONS
 //Sometimes functions fail because they have bad input, or because something went wrong internally. Swift lets us throw errors from functions by making them as throws before their return type, then using the throw keyword when something goes wrong. First we need to define an enum that describes the errors we can throw. these must always be based on swift's existing Error type. We're going to write a function that checks wheteher a password is good. so we'll throw an error if the user tries an obvious password:
 
 enum PasswordError: Error {
@@ -588,9 +599,8 @@ throws -> Bool {
     return true
 }
 
-//MARK:- RUNNING THROWING FUNCTIONS
+// MARK: - RUNNING THROWING FUNCTIONS
 //Swift doesn't like errors to happen when your program runs, which means it won't let yo urun an error-throwing function by accident. Instead. You need to call these functions using three new keywords: do try and catch. do starts a section of code that might cause problems, try is used before every function that might throw an erros, and catch lets you handle errors gracefully. If any errors are thrown inside the do block. execution immediately jumps to the catch block. Let's try calling checkPassword() with a parameter that throws an error.
-
 
 do {
     try checkPassword("password")
@@ -601,7 +611,7 @@ do {
 
 //You can have multiple catch blocks to handle individual errors if you want, but you do need to catch all possible errors at some point otherwise your code won't build. OK
 
-//MARK:- INOUT PARAMETERS
+// MARK: - INOUT PARAMETERS
 //All Parameters passed into a swift functin are constants, so you can't change them. If you want you can pass in one or more parameters as inout. which means they can be changes inside your function. and those changes reflect in the original value outside the function. For ex: if you want to double a number in place i.e change the value directly rather than returning a new one - you might write a function like below
 
 func doubleInPlace(number: inout Int) {
@@ -612,7 +622,7 @@ func doubleInPlace(number: inout Int) {
 var myNum = 10
 doubleInPlace(number: &myNum)
 
-//MARK:- CLOSURES
+// MARK: - CLOSURES
 //// CompletionHandler are closures which is called inside the function, that closures are usually called after some task is complete.
 //Swift lets us use functions just like any other type such as strings and integers. This means you can create a function and assign it to a variable. call that function using that variable. and even pass that function into other functions as parameters. Functions used in this way are called CLOSURES. and although they work like functions they are written a little differently.
 
@@ -687,7 +697,7 @@ func travels(action: () -> Void) {
 }
 
 // Because it's last parameter is a closure. we can call travel() using trailing closure syntax like below
-travels() {
+travels {
     print("I'm getting ready to go")
 }
 //Infact, there aren't any other parameters, we can eliminate the parentheses entirely
@@ -698,7 +708,7 @@ travels {
 //USING CLOSURES AS PARAMETERS WHEN THEY ACCEPT PARAMETERS
 // A Closure you pass into a function can also accept its own parameters.
 
-func crawl(action: (String) -> Void){
+func crawl(action: (String) -> Void) {
     print("I'm getting ready to crawl.")
     action("Home")
     print("I arrived")
@@ -720,6 +730,17 @@ func travel(action: (String) -> String) {
 travel { (place: String) -> String in
     return "I'm going to \(place) in my car"
 }
+
+// SHORTHAND PARAMETER NAMES
+
+// CLOSURES WITH MULTIPLE PARAMETERS
+
+// RETURNING CLOSURES FROM FUNCTIONS
+
+// CAPTURING VALUES
+
+// CLOSURES SUMMARY
+
 // NEXT TOPICS TO COVER
 
 // STRUCTS
@@ -730,13 +751,13 @@ travel { (place: String) -> String in
 
 //OPTIONALS
 
+//
 
-
-
-
-
-
-
-
-
-
+struct Question {
+    var difficulty = 1
+}
+var question1 = Question()
+var question2 = question1
+question2.difficulty = 2
+var z = question2.difficulty
+print(z)
