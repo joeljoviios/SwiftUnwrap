@@ -719,6 +719,7 @@ crawl { (place: String) in
 }
 
 // USING CLOSURES AS PARAMETERS WHEN THEY RETURN VALUES
+// NOTE: A CLOSURE CAN BE PASSED TO A FUNCTION,
 // We've been using () -> Void means "Accepts no parameters and return nothing" but we can replace that Void with any type of data to force the closure to return a value
 
 func travel(action: (String) -> String) {
@@ -732,9 +733,30 @@ travel { (place: String) -> String in
     return "I'm going to \(place) in my car"
 }
 
-// NOTE: A CLOSURE CAN BE PASSED TO A FUNCTION, 
-// SHORTHAND PARAMETER NAMES
+// Examples or Test for Closures as parameters when they return values
 
+func loadData(input: () -> String) {
+print("Loading...")
+    let str = input()
+    print("Loaded \(str)")
+}
+
+loadData {
+    print("sorry")
+    return "He thrusts his fists against the posts"
+}
+
+func playSong(_ name: String, notes: () -> String) {
+    print("I'm going to play \(name)")
+    let playedNotes = notes()
+    print(playedNotes)
+}
+
+playSong("String") {
+    return "EDFFDESGDES"
+}
+
+// SHORTHAND PARAMETER NAMES
 
 // CLOSURES WITH MULTIPLE PARAMETERS
 
@@ -756,6 +778,8 @@ travel { (place: String) -> String in
 
 //
 
+
+// STRUCT is a Value Type
 struct Question {
     var difficulty = 1
 }
@@ -764,4 +788,13 @@ var question2 = question1
 question2.difficulty = 2
 var z = question2.difficulty
 print(z)
+
+// CLASS is a reference Type
+class Questions {
+    var difficultys = 1
+}
+var question1s = Questions()
+var question2s = question1s
+let xxx = question2s.difficultys
+
 
