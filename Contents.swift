@@ -719,6 +719,7 @@ crawl { (place: String) in
 }
 
 // USING CLOSURES AS PARAMETERS WHEN THEY RETURN VALUES
+// We've been using () -> Void means "Accepts no parameters and return nothing" but we can replace that Void with any type of data to force the closure to return a value
 
 func travel(action: (String) -> String) {
     print("I'm getting ready to go.")
@@ -731,7 +732,9 @@ travel { (place: String) -> String in
     return "I'm going to \(place) in my car"
 }
 
+// NOTE: A CLOSURE CAN BE PASSED TO A FUNCTION, 
 // SHORTHAND PARAMETER NAMES
+
 
 // CLOSURES WITH MULTIPLE PARAMETERS
 
@@ -761,3 +764,4 @@ var question2 = question1
 question2.difficulty = 2
 var z = question2.difficulty
 print(z)
+
