@@ -51,7 +51,7 @@ sayHelloToJona(name: "Jona", age: 20, isAlive: true, Percentage: 99.9)
 
 // MARK: Function with return type
 func addNumberTo(x: Int) -> Int {
-   let sum = x + 10
+    let sum = x + 10
     return sum
 }
 addNumberTo(x: 5)
@@ -169,7 +169,7 @@ func printGreeting(to: String) -> String {
 
 func lazyTest() {
     print("Before lazy")
-        var greeting = printGreeting(to: "Paul")
+    var greeting = printGreeting(to: "Paul")
     print("After lazy")
     print(greeting)
 }
@@ -190,10 +190,10 @@ let tempNumber = 0.0
 print("\(joelGreeting), and my age on total is \(joelAge + tempNumber)")
 
 // Use """ for strings that take up multiple lines
-    let quatation = """
-    I said "My age is \(joelAge). "
-    And then I said "My age is \(joelAge + tempNumber)" on total."
-    """
+let quatation = """
+        I said "My age is \(joelAge). "
+        And then I said "My age is \(joelAge + tempNumber)" on total."
+        """
 
 // MARK: Arrays and Dictionaries
 //Create an empty Array and Dictionary using Initializer Syntax
@@ -237,12 +237,12 @@ var greets = "Hello"
 if let name = optionalName {
     greets = "Hello, \(name)"
 } else {
-    greets = "Bye, \(optionalName)"
+    greets = "Bye, \(optionalName ?? "")"
 }
 
 /*
  If the optional value is nil, the conditional is false and the code in braces is skipped. Otherwise, the optional value is unwrapped and assigned to the constant after let, which makes the unwrapped value available inside the block of code
- 
+
  Another way to handle optional values is to provide a default value using the ?? operator. If the optional vlaue is missing, the default value is used instead.
  */
 
@@ -489,7 +489,7 @@ while speed <= 55 {
 //It's identical to a while loop except the condition to check comes at the end.
 var number = 1
 repeat {
-print(number)
+    print(number)
     number += 1
 }while number <= 3
 print("Ready or not, here I come!")
@@ -511,10 +511,10 @@ repeat {
 
 func printHelp() {
     let message = """
-        Welcome to myAPP!
-        Run this app inside a directory of images and
-        MyAPP will resize them all into thumbnails
-        """
+            Welcome to myAPP!
+            Run this app inside a directory of images and
+            MyAPP will resize them all into thumbnails
+            """
     print(message)
 }
 printHelp()
@@ -736,7 +736,7 @@ travel { (place: String) -> String in
 // Examples or Test for Closures as parameters when they return values
 
 func loadData(input: () -> String) {
-print("Loading...")
+    print("Loading...")
     let str = input()
     print("Loaded \(str)")
 }
@@ -765,19 +765,39 @@ playSong("String") {
 // CAPTURING VALUES
 
 // CLOSURES SUMMARY
+///Notes: You can assign closure to a variable and call them later on
+let exDriving = {
+    print("I'm driving")
+}
+///Closures can accept parameters and return functions just like regular functions
+let exxDriving = { (place: String) in
+    print("I'm going to \(place) in my car")
+}
+///You can pass closures into functions as parameters, and those closures can have parameters of their own and a return value.
+func exTravel(action: () -> Void) {
+    print("I'm getting ready to go")
+    action()
+    print("I arrived")
+}
+///If the last parameter to your function is a closure, you can use trailing closure syntax.
+exTravel {
+    print("I'm driving ")
+}
+///Swift automatically provides shorthand parameter names like $o and $1
+
+
+/// If you use external values inside your closure, they will be captured so the closure can refer to them later
+func travels() -> (String) -> Void {
+    var counter = 1
+    return {
+        print("\(counter). I'm going to \($0)")
+        counter += 1
+    }
+}
 
 // NEXT TOPICS TO COVER
 
 // STRUCTS
-
-//CLASSES
-
-//PROTOCOLS
-
-//OPTIONALS
-
-//
-
 
 // STRUCT is a Value Type
 struct Question {
@@ -788,6 +808,179 @@ var question2 = question1
 question2.difficulty = 2
 var z = question2.difficulty
 print(z)
+
+struct Sports{
+    var name: String
+}
+
+var tennis = Sports(name: "Tennis")
+print(tennis.name)
+
+// COMPUTED PROPERTIES
+/// the name property in the sports struct stores a string and they are called "Stored Properties", Computed Properties - a property that runs code to figure out its value.
+/// /// Computed properties must always have a type annotation, and must always be created using var rather than let
+
+struct Sport {
+    var name: String
+    var isOlympicSport: Bool
+    var olympicStatus: String {
+        if isOlympicSport {
+            return "\(name) is an olympic sport"
+        } else {
+            return "\(name) is not an olympic sport"
+        }
+    }
+}
+
+let chessBox = Sport(name: "chessBoxing", isOlympicSport: false)
+print(chessBox.olympicStatus)
+
+struct Swordfighter {
+    var name: String
+    var introduction: String {
+        return "Hello, my name is \(name)"
+    }
+}
+let cricket = Swordfighter(name: "Josh")
+print(cricket.introduction)
+
+
+struct wine{
+    var age: Int
+    var isVintage: Bool
+    var price: Int {
+        if isVintage{
+            return age + 20
+        } else {
+            return age + 5
+        }
+    }
+}
+
+let malbec = wine(age: 2, isVintage: false)
+print(malbec.price)
+
+/* struct candle{
+ var burnLength: Int
+ var alreadyBurned = 0
+ let burnRemaining: Int {
+ return burnLength - alreadyBurned
+ }
+ }
+ NOTES: Constants cannot be computed properties
+ */
+
+// PROPERTY OBSERVERS
+// Property Observers let you run code before or after any property changes.
+/// Now what we want to happen is for swift to print a message every time amount changes and we can use didSet Property observer for that. this will run code every time amount changes
+
+/*
+ // Scenario with willset
+ struct Progress{
+ var task: String
+ var amount: Int {
+ willSet {
+ print("\(task) is now \(amount)% complete")
+ }
+ }
+ }
+
+ var progress = Progress(task: "Loading Data", amount: 0)
+ progress.amount = 10
+ progress.amount = 50
+ progress.amount = 100
+ */
+// NOTE: we can use WillSet also take action before a property changes.
+
+// Scenario with didset
+struct Progress {
+    var task: String
+    var amount: Int {
+        didSet {
+            print("\(task) is now \(amount)% complete")
+        }
+    }
+}
+
+var progress = Progress(task: "Loading Data", amount: 0)
+progress.amount = 10
+progress.amount = 50
+progress.amount = 100
+
+struct FishTank{
+    var capacity: Int
+    var fishCount: Int {
+        didSet {
+            if fishCount > capacity {
+                print("too many fishes")
+            }
+        }
+    }
+}
+
+// Examples
+struct BankAccount {
+    var name: String
+    var isMillionaire: Bool
+    var balance: Int {
+        didSet {
+            if balance > 1_000_000 {
+                isMillionaire = true
+            } else {
+                isMillionaire = false
+            }
+        }
+    }
+}
+
+// METHODS
+/// Structs can have functions inside them, and those functions can use the properties of the struct as they need to. Functions inside struct are called "methods", but they still use the same "func" keyword
+
+struct City{
+    var population: Int
+    func collectTaxes() -> Int {
+        population * 1000
+    }
+}
+
+/// That method belongs to the struct, so we call it on instances of the struct like below
+
+let london = City(population: 90000)
+london.collectTaxes()
+
+struct Car {
+    var maxSpeed: Int
+    func accelerate(to speed: Int ) {
+        if speed > maxSpeed {
+            print("too fat")
+        } else {
+            print("OK, lets go")
+        }
+    }
+}
+
+struct User{
+    var name: String
+    var street: String
+    var city: String
+    func printAddress() -> String {
+        return """
+\(name)
+\(street)
+\(city)
+"""
+    }
+}
+let user = User(name: "Joe", street: "HYD", city: "HYD")
+user.printAddress()
+
+// Mutating Methods
+//CLASSES
+
+//PROTOCOLS
+
+//OPTIONALS
+
 
 // CLASS is a reference Type
 class Questions {
