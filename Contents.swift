@@ -975,6 +975,86 @@ let user = User(name: "Joe", street: "HYD", city: "HYD")
 user.printAddress()
 
 // Mutating Methods
+/// If a struct has a variable property but the instance of the struct was created as a constant, that property can't be changed - the struct is constant, so all its properties are also constant regardless of how they were created.
+/// SIMPLY THE STRUCT IS A CONSTANT.
+/// Method Modifies a struct's property without being marked mutating.
+struct Person {
+    var name: String
+    mutating func makeAnonymous() {
+        name = "Anonymous"
+    }
+}
+var person = Person(name: "JO")
+person.makeAnonymous()
+
+// PROPERTIES AND METHODS OF STRINGS
+/// WE'VE used lots of strings so far, and it turns out they are structs - they have their own methods and properties we can use to query and manipulate the string
+
+let string = "Do or do not, there is no try"
+print(string.count)
+print(string.hasPrefix("Do"))
+print(string.uppercased())
+print(string.sorted())
+
+/// properties and methods of strings: One of the most useful methods of string is contains(), which returns true if the string contains another string. For example, "world.contains("orl") is true"
+
+// PROPERTIES AND METHODS OF ARRAYS
+/// Arrays are also structs, which means they too have their own methods and properties we can use to query and manipulate the array.
+
+var toys = ["Woody"]
+print(toys.count)
+toys.append("Buzz")
+toys.firstIndex(of: "Buzz")
+toys.sorted()
+toys.remove(at: 0)
+
+/// properties and methods of arrays: Like strings, arrays also have a contains() method: [1,2,3].contains(2) is true
+
+var fibonaci = [1,1,2,3,5,8]
+fibonaci.sorted()
+
+var usedNumbers = [Int]()
+for i in 1...10 {
+    usedNumbers.append(i)
+}
+usedNumbers.count
+
+// INITIALIZERS
+/// Initializers are special methods that provide different ways to create your struct. All structs come with one by default, called their memberwise initializer -- this asks you to provide a value for each property when you create the struct.
+
+struct Users {
+    var userName: String
+}
+var users = Users(userName: "Jovi")
+/// we can provide our own initialiazer to replace the default one. For example we might want to create all new users as "Anonymous" and print a message,
+///
+
+struct Userss {
+    var userNames: String
+    init() {
+        userNames = "Anonymous"
+        print("creating a new users!")
+    }
+}
+
+/// You don't write func before initializers, but you do need to make sure all properties have a value before the initializers ends. Now our initializers accepts no parameters, we need to create the struct like below
+
+var userr = Userss()
+userr.userNames = "Jovi"
+
+struct Cabinet {
+    var height: Double
+    var width: Double
+    var area: Double
+    init(itemHeight: Double, itemWidth: Double) {
+        height = itemHeight
+        width = itemWidth
+        area = height * width
+    }
+}
+
+let drawers = Cabinet(itemHeight: 1.4, itemWidth: 1.0)
+
 //CLASSES
 
 //PROTOCOLS
