@@ -1021,6 +1021,7 @@ usedNumbers.count
 
 // INITIALIZERS
 /// Initializers are special methods that provide different ways to create your struct. All structs come with one by default, called their memberwise initializer -- this asks you to provide a value for each property when you create the struct.
+/// Initializers cannot finish until all properties have a value.
 
 struct Users {
     var userName: String
@@ -1054,6 +1055,136 @@ struct Cabinet {
 }
 
 let drawers = Cabinet(itemHeight: 1.4, itemWidth: 1.0)
+
+//REFERRING TO THE CURRENT INSTANCES
+/// INSDIE methods you get a special constant called "self". which points to whatever instance of the struct is currently being used. This self values is particularly useful when you create initializers that have the same parameter names as your property.
+/// self helps you distinguish between the property and the parameter self.name refers to the property, whereas name refers to the parameter.
+///
+struct PPerson {
+    var name: String
+    init(name: String) {
+        print("\(name) was born!")
+        self.name = name
+    }
+}
+
+// LAZY PROPERTIES
+/// As a performance optimizations, swift lets you create some properties only when they are needed, As an example,consider this FamilyTree struct - it doesn't do much, but in theory creating a family tree for someone takes a long time.
+///
+struct FamilyTree {
+    init() {
+        print("Creating family Tree!")
+    }
+}
+
+/// we might use that FamilyTree struct as a property inside a Person Struct like below
+
+struct PPPerson {
+    var name: String
+    var familyTree = FamilyTree()
+    init(name: String) {
+        self.name = name
+    }
+}
+var ed = PPPerson(name: "ED")
+
+/// But what if we didn't always need the family tree for a particular person? If we need the lazy keyword to the familyTree property. then swift will only create the FamilyTree struct when it's first accessed.
+///
+//lazy var familyTree = FamilyTree()
+ var familyTree = FamilyTree()
+/// so if you want to see the "Creating famly tree!" message, you need to acess the property at least once.
+ed.familyTree
+
+// STATIC PROPERTIES AND METHODS
+/// All the properties and methods we've created so far have belonged to individual instances of structs, which means that if we had a Student struct we could create several student instance each with their own properties and methods.
+
+struct Student {
+    var name: String
+    init(name: String) {
+        self.name = name
+    }
+}
+
+let edd = Student(name: "Ed")
+let taylor = Student(name: "Taylor")
+
+/// you can also ask swift to share specific properties and methods across all instances of the struct by declaring them as "static"
+/// To try this out, we're  going to add a static property to the Student struct to store how many student s are in the class. Each time we create a new student, we'll add one to it.
+
+struct Studentt {
+    static var classSize = 0
+    var name: String
+    init(name: String) {
+        self.name = name
+        Studentt.classSize += 1
+    }
+}
+
+/// Because the classSize property belongs to the struct itself rather than instances of the struct, we need to read it using Student.classSize.
+print(Studentt.classSize)
+
+/// static properties and methods: Static methods work the same way as static properties - just write static func yourMethod() rather than func yourMethod()
+
+struct Raffle {
+    static var ticketsUsed = 0
+    var name: String
+    var tickets: Int
+    init(name: String, tickets: Int) {
+        self.name = name
+        self.tickets = tickets
+        Raffle.ticketsUsed += tickets
+    }
+}
+
+// ACCESS CONTROL
+/// Access control lets you restrict which code can use properties and methods. This is important because you might want to stop people reading a property directly, for ex: we could create a Person struct that has an id property to store their social security number
+
+struct Candidate {
+    var id: String
+    init(id: String) {
+        self.id = id
+    }
+}
+let eddd = Candidate(id: "12345")
+
+/// once that person has been created, we can make their id be private so you can't read it from outside the struct- trying to write ed.id simply wont work. just use the private keyword like below
+
+struct Candidates {
+    private var id: String
+    init(id: String) {
+        self.id = id
+    }
+}
+/// Now only methods inside Person can read the id property for ex
+
+struct Candidatess {
+    private var id: String
+    init(id: String) {
+        self.id = id
+    }
+    func identity() -> String {
+return "My social security nymber is \(id)"
+    }
+}
+
+/// Another common option is public, which lets all other code use the property or method
+
+struct xyz {
+     private var privatePosts =  "String"
+}
+let srah = xyz()
+
+
+// STRUCT SUMMARY
+/// You can create your own types using structures, which can have their own properties and methods
+/// you can use stored properties or use computed properties to calculate values on the fly.
+/// If you want to change a property inside a method, you must mark it as "mutating"
+/// Initializers are special methods that create structs. You get a memberwise initializer by default, but if you create your own you must give all properties a value.
+/// Use the "self" constant to refer to the current instance of a struct inside a method
+/// the "lazy" keyword tells swift to create properties only when they are first used
+/// You can share properties and methods across all instances of a struct using the "static" keyword
+/// Access control lets you restrict what code can use properties and methods.
+
 
 //CLASSES
 
