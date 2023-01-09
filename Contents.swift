@@ -1187,6 +1187,247 @@ let srah = xyz()
 
 
 //CLASSES
+/// Classes are similar to structs in that they allow you to create new types with properties and methods, but they have 5 important differences.
+/// THE FIRST DIFFERENCE between classes and structs is that classes never come with a memberwise initializer. This means if you have properties in your class, you must always create your own initializer
+/// For Example
+class Dog {
+    var name: String
+    var breed: String
+    init(name: String, breed:String) {
+        self.name = name
+        self.breed = breed
+    }
+}
+/// creating instances of that class looks just the same as if were a struct
+let puppy = Dog(name: "Puppy", breed: "Poodle")
+puppy.name
+puppy.breed
+
+/// Creating your own classes: If a class has properties, it needs an initializer. The only exception is if all properties have default values, in which case an initializer isn't needed.
+
+// CLASS INHERITANCE
+/// THE SECOND DIFFERENCE between classes and structs is that you can create a class based on an existing class -- it inherits all the properties and methods of the original class, and can add its own on top of existing.
+/// This is called "class inheritance" or "subclassing", the class you inherit from is called the "parent" of "super" class and the new class is called the "child" class
+
+class Dogs{
+    var name: String
+    var breed: String
+    init(name: String, breed: String) {
+        self.name = name
+        self.breed = breed
+    }
+}
+/// we could create a new class based on that one called "Poodle", Ut will inherit the same properties and initializer as Dogs by default.
+
+class Poddle: Dogs {
+
+}
+/// However, we can also give Poodle its own initializer. we know it will always have the breed 'Poddle', So we can make a new initializer that only needs a name property. Even better, we can make the Poddle initializer call the Dogs initializer directly so that all the same setup happens
+
+class Poddles: Dogs {
+    init(name: String) {
+        super.init(name: name, breed: "Poddle")
+    }
+}
+
+/// For safety reasons, Swift always makes you call super.init() from child classes -- just in case the parent class does some important work when it's created.
+
+class computer {
+    var cpu: String
+    var ramGB: Int
+    init(cpu: String, ram: Int) {
+        self.cpu = cpu
+        self.ramGB = ram
+    }
+}
+
+class Laptop: computer {
+    var screenInches: Int
+    init(screenInches: Int, cpu: String, ramGB: Int) {
+        self.screenInches = screenInches
+        super.init(cpu: cpu, ram: ramGB)
+    }
+}
+
+// OVERRIDING METHODS
+/// Child classes can replace parent methods with their own implementation - a process knows as overriding.
+
+class Cat {
+    func makeNoise() {
+        print("Meow")
+    }
+}
+
+class pamerian: Cat {
+
+}
+let catPuppy = pamerian()
+catPuppy.makeNoise()
+
+/// Method Overriding allows us to change the implementation of makeNoise() for the pamerian class
+/// Swift requires us to use override func rathan than just func when overriding a method -- it stops you from overriding a method by accident, and you'll get an error if you try to override something that doesn't exist on the parent class.
+
+class overridePamerian: Cat {
+    override func makeNoise() {
+        print("Meowww")
+    }
+}
+
+let pussyCat = overridePamerian()
+pussyCat.makeNoise()
+
+/// With that change pussyCat.makeNoise() will print meowww rather than meow.
+
+class spaceShip {
+
+}
+class starDestroyer: spaceShip {
+    func enterLightSpeed () {
+        print("Let's go ludicroud seed!")
+    }
+}
+
+let executor = starDestroyer()
+executor.enterLightSpeed()
+
+// FINAL CLASSES
+/// Although class inheritance is very useful-- and in fact large parts of Apple's platforms require you to use it - sometimes you want to disallow other developers from building their own class based on yours.
+/// Swift gives us final keyword just for this purpose: When you declare a calss as being final, no other class can inherit from it. This means they cna't override your methods in order to change your behaviour -- they need to use your class the way it was written.
+/// To make a class final just put the final keyword before it.
+
+final class monkey {
+    var name: String
+    var breed: String
+    init(name: String, breed: String) {
+        self.name = name
+        self.breed = breed
+    }
+}
+
+// COPYING OBJECTS
+/// THE third difference between classes and structs is how they are copied. when you copy a struct, both the original and the copy are different things -- changing once won't change the other. When you copy a class, both the original and the copy point to the same thing. So changing one does change the other.
+/// for example
+class Singer {
+    var name =  "The Weekend"
+}
+/// If we create an instance of class and prints name it print "The Weekend"
+
+var singer = Singer()
+singer.name
+var singerCopy = singer
+singerCopy.name = "JB"
+
+/// Because of the ways classes work, both singer and singerCopy point to same object in memory, so when we print singer name again w'll see "JB"
+print(singer.name)
+print(singerCopy.name)
+
+// ON the other hand, if singer were a struct then we would get "The weekend" printed a second time
+
+struct Singerr {
+    var name = "The weekend"
+}
+
+var singerr = Singerr()
+print(singerr.name)
+var singerrCopy = singerr
+singerrCopy.name = "JB"
+print(singerCopy.name)
+
+class BasketBallPlayer {
+    var height = 200
+}
+
+var lebron = BasketBallPlayer()
+lebron.height = 203
+var curry = BasketBallPlayer()
+curry.height = 190
+print(lebron.height)
+print(curry.height)
+
+class Author {
+    var name = "Unknown"
+}
+
+var dickens = Author()
+dickens.name = "Joel"
+var austen = dickens
+austen.name = "Jovi"
+print(dickens.name)
+print(austen.name)
+
+// DEINITIALIZERS
+/// THE FOURTH difference between classes and structs is that classes can have deinitializers -- code that gets run when an instance of class is destroyed.
+/// To demonstrate this,
+class persona{
+    var name = "Joel Jovi"
+    init() {
+        print("\(name) is alive!")
+    }
+    func printGreeting() {
+        print("Hello I'am \(name)")
+    }
+}
+/// we're going to create a few instances of the persona class inside a loop, coz each time the loop goes around a new persona will be created then destroyed.
+for _ in 1...3 {
+    let personaa = persona()
+    personaa.printGreeting()
+}
+
+// And now the deinitializer. This will be called when the persona insance is being destroyed.
+//deinit {
+//    print("\(name) is nor more!")
+//}
+// the deinit method doesn't have parentheses after it, because it never takes parameters. so always write deinit rather than dinit().
+
+// MUTABILITY - CHANGE
+/// The final difference between classes and structs is the way they deal with constants. If you have a constant struct with a variable property, that property can't be changed because the struct itself is constant.
+/// However, if you have constant class with a variable property, that property can be changed. coz of this, classes don't need the mutating keyword with methods that change properties, that only needed with structs.
+/// this difference means you can change any variable property on a class even when the class is created as a constant -- this is perfectly valid code.
+
+class Artist {
+    var name = "The Weekend"
+}
+let JB = Artist()
+JB.name = "JB"
+print(JB.name)
+
+/// If you want to stop that from happening you need to make the property constant.
+
+
+struct Code {
+    var noOfBugs = 100
+    mutating func fixBug() {
+        noOfBugs += 3
+    }
+}
+
+var code = Code()
+code.fixBug()
+
+// NOTE: Mutating keyword is not allowed with classes
+class Light {
+    var onState = false
+    func toggle() {
+        if onState {
+            onState = false
+        } else {
+            onState = true
+        }
+        print("Click")
+    }
+}
+let light = Light()
+light.toggle()
+
+// CLASSES SUMMARY
+/// Classes and structs are familiar, in that they can both let you create your own types with properties and methods.
+/// Once class can inherit from another, and it gains all the properties and methods of the parent class. It's common to talk about class hierarchies -- one class based on another, which itself is based on another
+/// You can mark a class with the final keyword, which stops other classes from inheriting from it.
+/// Method overriding lets a child class replace a method in its parent class with a new implementation
+/// When two variables point at the same class instance, they both point at the same piece of memory - changing one changes the other,
+/// Classes can have a deinitializer, which is code that gets run when an instance of the class is destroyed.
+/// Classes don't enforce constants as strongly as structs - if a property is declared as a variable, it can be changed regardless of how the class instance was created.
+
 
 //PROTOCOLS
 
