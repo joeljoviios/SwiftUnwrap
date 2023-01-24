@@ -1421,25 +1421,88 @@ light.toggle()
 
 // CLASSES SUMMARY
 /// Classes and structs are familiar, in that they can both let you create your own types with properties and methods.
-/// Once class can inherit from another, and it gains all the properties and methods of the parent class. It's common to talk about class hierarchies -- one class based on another, which itself is based on another
+/// One class can inherit from another, and it gains all the properties and methods of the parent class. It's common to talk about class hierarchies -- one class based on another, which itself is based on another
 /// You can mark a class with the final keyword, which stops other classes from inheriting from it.
-/// Method overriding lets a child class replace a method in its parent class with a new implementation
+/// Method overriding lets a child class replace a method in its parent class with a new implementation.
 /// When two variables point at the same class instance, they both point at the same piece of memory - changing one changes the other,
 /// Classes can have a deinitializer, which is code that gets run when an instance of the class is destroyed.
 /// Classes don't enforce constants as strongly as structs - if a property is declared as a variable, it can be changed regardless of how the class instance was created.
 
 
 //PROTOCOLS
+/// Protocols are a way of describing what properties and methods something must have. You then tell swift which types use that protocol -- a process known as adopting or confirming to a protocol.
+/// For example, we can write a function that accepts something with an id property, but we don't care precisely what type of data is used. We'll start  by creating and Identifiable protocol. which will require all conforming types to have an id string that can be read "get" or written "set"
+
+protocol Identifiable {
+    var id: String { get set}
+}
+
+/// we can't create instances of that protocol -- it's a description of what we want, rather than something we can create and use directly. But we can create a struct that conforms to it.
+
+struct Userr: Identifiable {
+    var id: String
+}
+
+func displayID(thing: Identifiable) {
+    print("my ID is \(thing.id)")
+}
+
+/// NOTE: You can use { get set } in your protocols to make read-write variables, or just { get } to make read-only variables. Using just { set } is not allowed.
+
+// MARK:-  PROTOCOL INHERITANCE
+
+/// One protocol can inherit from another in a process known as "PROTOCOL INHERITANCE". Unlike with classes, you can inherit from multiple protocols at the same time before you add your own customizations on top.
+/// We're going to define there protocols: Payable requires conforming types to implement a calculateWages() method, needsTraining requires conforming types to implement a study() method, and HasVacation requires conforming types to implement a takeVacation() method:
+
+protocol Payable {
+    func calculateWages() -> Int
+}
+protocol NeedsTraining {
+    func study()
+}
+protocol HasVacation {
+    func takeVacation(days: Int)
+}
+
+/// We can now create a single Employee protocol that brings them together in one protocol. we don't need to add anything on top, so we'll just write open and close braces:
+
+protocol Employee: Payable, NeedsTraining, HasVacation { }
+
+/// Now we can make new types conform to that single protocol rather than each of the three individual ones.
+
+// EXTENSIONS
+/// Extensions allow you to add methods to existing types, to make them do things the weren't originally designed to do.
+/// for example, we could add an extension to the Int type so that it has a squared() method that returns the current number multiplied by itself:
+extension Int {
+    func squared() -> Int {
+        return self * self
+    }
+
+    var isEven: Bool {
+        return self % 2 == 0
+    }
+}
+
+let squaredNumber = 7
+squaredNumber.squared()
+squaredNumber.isEven
+
+extension String {
+    func withPrefix(_ prefix: String) -> String {
+        if self.hasPrefix(prefix) {
+            return self
+        }
+        return "\(prefix)\(self)"
+    }
+}
+
+
+
+
+
+
+
+
 
 //OPTIONALS
-
-
-// CLASS is a reference Type
-class Questions {
-    var difficultys = 1
-}
-var question1s = Questions()
-var question2s = question1s
-let xxx = question2s.difficultys
-
 
