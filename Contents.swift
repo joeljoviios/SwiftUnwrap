@@ -1470,7 +1470,7 @@ protocol Employee: Payable, NeedsTraining, HasVacation { }
 
 /// Now we can make new types conform to that single protocol rather than each of the three individual ones.
 
-// EXTENSIONS
+// MARK:- EXTENSIONS
 /// Extensions allow you to add methods to existing types, to make them do things the weren't originally designed to do.
 /// for example, we could add an extension to the Int type so that it has a squared() method that returns the current number multiplied by itself:
 extension Int {
@@ -1496,13 +1496,92 @@ extension String {
     }
 }
 
+// MARK:- PROTOCOL EXTENSIONS
+/// Protocols let you describe what methods something should have, but don't provide the code inside. Extensions let you provide the code inside, but only affect one data type- you can't add the method to lots of types at the same time.
+/// Protocol extensions solve both those problems: they are like regular extension, except rather than extending a specific type like Int you extend a whole protocol so that all conforming types get your changes.
+
+let pythons = ["Erci","Graham","John","Michael","Terry", "Terry"]
+let beatles = Set(["John", "Paul", "George", "Ringo"])
+
+/// Swifts arrays and sets both conform to a protocol called Collection, so we can write an extension to that protocol to add a summarize() method to print the collection neatly
+
+extension Collection {
+    func summarize() {
+        print("there are \(count) of us:")
+        for name in self {
+            print(name)
+        }
+    }
+}
+
+/// Both Array and Set will now have that method. so we can try it out
+pythons.summarize()
+beatles.summarize()
+
+//NOTE: One type can conform to as many protocols as you want
+
+// Examples:
+protocol Animie {
+    var availableLanguages: [String] { get set }
+    func watch(in language: String)
+}
+
+extension Animie {
+    func watch(in language: String) {
+        if availableLanguages.contains(language) {
+            print("Now playing in \(language)")
+        } else {
+            print("Unrecognised language")
+        }
+    }
+}
+
+protocol Hamster {
+    var fame: [String] { get set }
+    func runInWheel(minutes: Int)
+}
+
+extension Hamster {
+    func runInWheel(minutes: Int) {
+        print("\(fame) is going for run")
+        for _ in 0..<minutes {
+            print("whir whir")
+        }
+    }
+}
+
+// MARK:- PROTOCOL ORIENTED PROGRAMMING
+/// Protocol extensions can provide default implementations for our own protocol methods. This makes it easy for types to conform to a protocol, and allows a technique called "protocol oriented programming" - crafting your code around protocols and protocol extensions.
+protocol Identifiablee {
+    var id: String { get set }
+    func identify()
+}
+
+/// we could make every conforming type write their own identify() method, but protocol extensions allow us to provide a default:
+
+extension Identifiablee {
+    func identify() {
+        print("My id is \(id).")
+    }
+}
+
+/// Now when we create a type that conform to Identifiable it gets identify() automaticaly
+struct follower: Identifiablee {
+    var id: String
+}
+let twoStraws = follower(id: "JP@1234")
+twoStraws.identify()
+
+//NOTE: Protocol Extensions are default implementations of methods, but your types can still provide their own versions.
+
+// MARK:- PROTOCOLS AND EXTENSIONS SUMMARY:
+///Protocols describe what methods and properties a conforming type must have, but don't provide the implementations of those methods.
+///You can build protocols on top of other protocols, similar to classes.
+///Extensions let you add methods and computed properties to specific types such as Int.
+///Protocol extensions let you add methods and computed properties to protocols.
+///Protocol-oriented programming is the practice of designing your app architecture as a series of protocols. then using protocol extensions to provide default method implementations.
 
 
+//MARK:- OPTIONALS
 
-
-
-
-
-
-//OPTIONALS
 
