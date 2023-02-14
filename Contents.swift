@@ -1419,7 +1419,7 @@ class Light {
 let light = Light()
 light.toggle()
 
-// CLASSES SUMMARY
+// MARK:- CLASSES SUMMARY
 /// Classes and structs are familiar, in that they can both let you create your own types with properties and methods.
 /// One class can inherit from another, and it gains all the properties and methods of the parent class. It's common to talk about class hierarchies -- one class based on another, which itself is based on another
 /// You can mark a class with the final keyword, which stops other classes from inheriting from it.
@@ -1429,7 +1429,7 @@ light.toggle()
 /// Classes don't enforce constants as strongly as structs - if a property is declared as a variable, it can be changed regardless of how the class instance was created.
 
 
-//PROTOCOLS
+// MARK:- PROTOCOLS
 /// Protocols are a way of describing what properties and methods something must have. You then tell swift which types use that protocol -- a process known as adopting or confirming to a protocol.
 /// For example, we can write a function that accepts something with an id property, but we don't care precisely what type of data is used. We'll start  by creating and Identifiable protocol. which will require all conforming types to have an id string that can be read "get" or written "set"
 
@@ -1572,7 +1572,7 @@ struct follower: Identifiablee {
 let twoStraws = follower(id: "JP@1234")
 twoStraws.identify()
 
-//NOTE: Protocol Extensions are default implementations of methods, but your types can still provide their own versions.
+// NOTE: Protocol Extensions are default implementations of methods, but your types can still provide their own versions.
 
 // MARK:- PROTOCOLS AND EXTENSIONS SUMMARY:
 ///Protocols describe what methods and properties a conforming type must have, but don't provide the implementations of those methods.
@@ -1584,4 +1584,207 @@ twoStraws.identify()
 
 //MARK:- OPTIONALS
 
+// HANDLING MISSING DATA
+/// We've used types such as Int to hold values like 7. But if you wanted to store an age property for users, what would you do if you didn't know someone's age.?
+/// You might say "well, i'll store 0", but then you would get confused between new-born babies and people whose age you don't know. you could use a special number such as 1000 or -1 to represent "unknown", both of which are impossible ages, but then would you really remember that number in all the places it's used.?
+/// Swift's solution is called Optionals. and you can make options out of any type. An optional integer might have a number like 0 or 40. but it might have no value at all -- it might literally missing. which is nil in swift.
+/// To make a type optional, add a question mark after it. For ex: we can make an optional integer like this:
 
+var joviAge: Int?  = nil
+// This doesn't hold any number - it holds nothing. But if we later learn that age, we can use it
+joviAge = 29
+
+// NOTE: Handling Missing data: Earlier you learned about the index() method of arrays, which returns the position of an item inside an array. This actually returns an optional position, because the item might not be in the array.
+
+// UNWRAPPING OPTIONALS
+// Optional Strings might contain a string like "Hello" or they might be nil - nothing at all.
+
+var joviName: String? = nil
+
+// What happens if we use joviName.count? A real string has a count property that stores how many letters it has, but this is nil - it's empty memory, not a string, so it doesn't have a count.
+// Because of this, trying to read joviName.count is unsafe and swift won't allot it. Instead, we must look inside the optional and see what's there - a process know and "unwrapping."
+// A common way of unwrapping optionals is with if let syntax, which unwraps with a condition. If there was a value inside the optional the you can use it. but if there wasn't the value then condition fails. for ex:
+
+if let unwrapped = joviName {
+    print("\(unwrapped.count) letters")
+} else {
+    print("Missing Name.")
+}
+
+// If joviName holds a string, it will be put inside unwrapped as regular string and we can read its count property inside the condition. Alternatively, if name is empty, the else condition will run.
+// you can only unwrap options. Trying to unwrap non-optional values will cause an error.
+
+// UNWRAPPING WITH GUARD
+/// An Alternative to if let is guard let, which also unwraps optionals. guard let will unwrap an optional for you, but if it finds nil inside it expects you to exit the function, loop, or condition you used it in.
+/// However, the major difference between if let and guard let is that your unwrapped optional remains usable after the guard code.
+/// Let's try it out with a greet() function. This will accept an optional string as its only parameter and try to unwrap it, but if there's nothing inside it will print a message and exit. Because optionals unwrapped using guard let stay around after the guard finishes, we can print the unwrapped string at the end of the function:
+
+func greet(_ name: String?) {
+    guard let unwrapped = name else {
+        print("You didn't provide a name!")
+        return
+    }
+    print("Hello \(unwrapped)!")
+}
+
+// Using guard let lets you deal with problems at the start of your functions, then exit immediately. This means the rest of your function is the happy path - the path your code takes if everything is correct.
+// It's common to use both if let and guard let to unwrap optionals into a constant of the same name. For ex: guard let name = name else { return }
+
+// FORCE UNWRAPPING
+/// Optionals represent data that may or may not be there, but sometimes you know for sure that a value isn't nil. In these cases, swift lets you force unwrap the optional: convert it from an optional type to a non-optional type.
+/// for ex: if you have a string that contains a number, you can convert it to an Int like this:
+
+let str = "5"
+let num = Int(str)
+
+// That makes num an optional Int because you might have tried to convert a string like "fish" rather than 5
+// Even though swift isn't sure the conversion will work, you can see the code is safe so you can force unwrap the result by writing ! after Int(str) like below:
+
+let nmbr = Int(str)!
+
+// Swift will immediately unwrap the optional and make num a regular Int rather than an Int?. But if you're wrong - if str was something that couldn't be converted to an integer - your code will crash.
+// As a result, you should force unwrap only when you're sure it's safe- there's a reason it's often called the crash operator.
+// When you read a value from a dictionary, you're given back an optional because the key you requested might not exist.
+
+func league(for skillLevel: Int) -> Int? {
+    switch skillLevel {
+    case 1:
+        fallthrough
+    case 2:
+        return 3
+    case 3:
+        return 2
+    case 4:
+        return nil
+    default:
+        return nil
+    }
+}
+
+// IMPLICITLY UNWRAPPED OPTIONALS
+/// LIKE REGULAR optionals, implicitly unwrapped optionals might contain a value or they might be nil. However, unlike regular optionals you don't need to unwrap them in order to use them: you can use them as if they weren't optional at all.
+/// Implicitly unwrapped optionals are created by adding an exclamation mark after you type name like below
+let JonaAge: Int! = nil
+
+/// Because they behave as if they were already unwrapped, you don't need if let or guard let to use implicitly unwrapped optionals. However, if you try to use them and they have no value - if they are nil - your code crashes.
+/// Implicitly unwrapped optionals exist because sometimes a variable will start life as nil, but will always have a value before you need to use it. Because you know they will have a value by the time you need them, it's helpful not having to write if let all the time.
+/// that being said, if you're able to use regular optionals instead it's generally a good idea.
+
+// NIL COALESCING
+// The nil coalescing operator unwraps an optional and returns the value inside if there is one. If there isn't a value - if the optional was nil - then a default value is used instead, Either way, the result won't be optional, it will either by the value from inside the optional or the default value used a a back up.
+
+func userName(for id: Int) -> String? {
+    if id == 1 {
+        return "Jona Reddy"
+    } else {
+        return nil
+    }
+}
+// If we call that with ID 15 we'll get back nil because the user isn't recognised, but with nil coalescing we can provide a default value of "Anonymous" like below
+let useer = userName(for: 15) ?? "Anonymous"
+
+// That will check the result that comes back from the userName() function if it's a string then it will be unwrapped and placed into user, but if it has nil inside then Anonymous will be used instead.
+
+// OPTIONAL CHAINING
+// Swift provides us with a shortcut when using optionals, if you want to access something like a.b.c and b is optional, you can write a question mark after it to enable optional chaining: a.b?.c.
+// When that code is run, swift will check whether b has a value, and if it's nil the rest of the line will be ignored - swift will return nil immediately. But if it has a value, it will be unwrapped and execution will continue.
+
+let heroNames = ["pK","MB","PRABHAS","SURYA","KAMAL"]
+let hero = heroNames.first?.uppercased()
+
+// NOTE: you can chain as many things as you need.
+
+// OPTIONAL TRY
+// Back when we were talking about throwing functions, we looked at the code
+
+enum PasswordsError: Error {
+    case obvious
+}
+
+func checksPassword(_ password: String) throws -> Bool {
+    if password == "password" {
+        throw PasswordsError.obvious
+    }
+    return true
+}
+do {
+    try checksPassword("password")
+    print("That password is good!")
+} catch {
+    print("you can't use that password.")
+}
+
+/// That runs a throwing functions, using do, try and catch to handle error gracefully. There are two alternatives to try, both of which will make more sense now that you understand optionals and force unwrapping.
+/// The first is try? and changes throwing functions into functions that return an optional. if the function throws an error you'll be sent nil as the result, otherwise you'll get the return values wrapped as an optional.
+/// Using try? we can run checksPassword() like below
+
+if let result = try?
+    checksPassword("password") {
+    print("result was \(result)")
+} else {
+    print("D'OH..!")
+}
+
+/// The other alternative is try! which you can use when you know for sure that the function will not fail. if the function does throw an error, your code will crash
+try! checksPassword("sekrit")
+print("OK!")
+
+// FAILABLE INITIALIZERS
+// When talking about force unwrapping, we used this code
+
+let strr = "5"
+let nmbrr = Int(strr)
+
+/// That Converts a string to an integer, but because you might try to pass any string there what you actually get back is an optional integer
+/// this is a failable initializer. an initializer that might work or might not. You can write these in you won structs and classes by using init?() rather than init(), and return nil if something goes wrong. the return value will then be an optional of your type, for you to unwrap however you want
+/// As an ex: we could code a Person struct that must be created using a nine-letter ID string. If anything other than a nine letter string is used we'll return nil, otherwise we'll continue as normal.
+struct NineLetterID {
+    var id: String
+    init?(id: String) {
+        if id.count == 9 {
+            self.id = id
+        } else {
+            return nil
+        }
+    }
+}
+
+// NOTE: Double(someString) converts a string to a double similarly to Int(someString), but Bool(someString) is special: it looks for exactly true or false otherwise it returns nil
+
+// TYPE CASTING
+//Swift must always know the type of each of your variables. but sometimes you know more information than swift does. for ex:
+
+class Animal { }
+class Fish: Animal { }
+class Dogg: Animal {
+    func makeNoise() {
+        print("Bow bow")
+    }
+}
+
+// We can create a couple of fish and a couple of dogs, and put them into an array like below:
+
+let pets = [Fish(), Dogg(), Fish(), Dogg()]
+
+// Swift can see both fish and dog inherit from the Animal class, so it uses type inference to make pets an array of Animal.
+// If we want to loop over the pets array and ask all the dogs to bark, we need to perform a typecast: Swift will check to see whether each pet is a Dog object, and if it is we can the call makeNoise()
+// This uses a new keyword called as? which returns an optional: it will be nil if the typecast failed, or a converted type otherwise, here is how we can loop in Swift.
+
+for pet in pets {
+    if let dog = pet as? Dogg {
+        dog.makeNoise()
+    }
+}
+
+// NOTE: Trying to convert between unrelated types such as from String to Int will always fail. On the other hand, casting from something to itself, such as from Int to Int, will always success.
+
+// OPTIONALS SUMMARY
+/// OPTIONALS let us represent the absence of a vlaue in a clear and unambiguous way.
+/// Swift won't let us use optionals without unwrapping them, either using if let or using guard let
+/// You can force unwrap optionals with an exclamation mark, but if you try to force unwrap nil you code will crash
+/// Implicitly unwrapped optionals don't have the safety checks of regular optionals.
+/// You can use nil coalescing to unwrap an optional and provide a default value if there was nothing inside
+/// Optional chaining lets us write code to manipulate an optional, but if the optional turns out to be an empty the code is ignored.
+/// You can use try? to convert a throwing function into an optional return value, or try! to crash if an error is thrown.
+/// If you need your initializer to fail when it's given bad input, use init?() to make a failable initializer.
+/// You can use typecasting to convert one type of object to another.
