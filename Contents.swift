@@ -151,8 +151,32 @@ print(bStruct)
 
 // MARK: Generics
 /*
- Works with all the return types and helps in reducing redundant code.
+ Works with all the return types and helps in reducing redundant code. Generics allow us to write flexible, reusable, and type-safe code that works with any type while maintaining compile-time safety.
+ 
  */
+
+func printValues<T>(_ value: T) {
+    print(value)
+}
+
+printValues("Hello")
+printValues(10)
+printValues(10.10)
+
+// Generic Swap function
+
+func swapTwoValues<T>(_ a: inout T, _ b: inout T){
+    let temp = a
+    a = b
+    b = temp
+}
+var x = 5
+var y = 10
+var a = "Hi"
+var b = "Bye"
+
+swapTwoValues(&x, &y)
+swapTwoValues(&a, &b)
 
 func addInts(x: Int, y: Int) -> Int {
     return x+y
